@@ -41,7 +41,7 @@ public class UserController {
         if(val){
             return new ResponseEntity<>("Login Successful!",HttpStatus.OK);
         }
-        return new ResponseEntity<>("Invalid usename/password!",HttpStatus.OK);
+        return new ResponseEntity<>("Invalid username/password!",HttpStatus.OK);
     }
 
 }
