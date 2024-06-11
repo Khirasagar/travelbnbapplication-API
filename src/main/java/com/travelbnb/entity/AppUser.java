@@ -20,7 +20,7 @@ public class AppUser {
     @Column(name = "email", nullable = false, unique = true)
     private String email;
 
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY) //donot read or display the password
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY) //don't read or display the password
     @Column(name = "password", nullable = false)
     private String password;
 
