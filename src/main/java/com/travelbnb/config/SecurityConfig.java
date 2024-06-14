@@ -22,5 +22,4 @@ public class SecurityConfig {
         http.authorizeHttpRequests().anyRequest().permitAll();       //(haap)
         return http.build();
     }
-
 }
