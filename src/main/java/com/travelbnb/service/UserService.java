@@ -11,9 +11,11 @@ import java.util.Optional;
 @Service
 public class UserService {
     private AppUserRepository appUserRepository;
+    private JWTService jwtService;
 
-    public UserService(AppUserRepository appUserRepository) {
+    public UserService(AppUserRepository appUserRepository, JWTService jwtService) {
         this.appUserRepository = appUserRepository;
+        this.jwtService = jwtService;
     }
 
     public AppUser createUser(AppUser user){
@@ -25,12 +27,15 @@ public class UserService {
         return createdUser;
     }
 
-    public Boolean verifyLogin(LoginDto loginDto) {
+    public String verifyLogin(LoginDto loginDto) {
         Optional<AppUser> opUserName = appUserRepository.findByUsername(loginDto.getUsername());
         if(opUserName.isPresent()){
             AppUser appUser = opUserName.get();
-            return BCrypt.checkpw(loginDto.getPassword(),appUser.getPassword());
+            if(BCrypt.checkpw(loginDto.getPassword(),appUser.getPassword())){
+                String token = jwtService.generateToken(appUser);
+                return token;
+            }
         }
-        return false;
+        return null;
     }
 }

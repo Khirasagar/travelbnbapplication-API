@@ -37,11 +37,11 @@ public class UserController {
     //method for signup feature
     @PostMapping("/login")
     public ResponseEntity<String> verifyLogin(@RequestBody LoginDto loginDto){
-        Boolean val = userService.verifyLogin(loginDto);
-        if(val){
-            return new ResponseEntity<>("Login Successful!",HttpStatus.OK);
+        String token = userService.verifyLogin(loginDto);
+        if(token != null){
+            return new ResponseEntity<>(token,HttpStatus.OK);
+        }else{
+        return new ResponseEntity<>("Invalid token! ",HttpStatus.OK);
         }
-        return new ResponseEntity<>("Invalid username/password!",HttpStatus.OK);
     }
-
 }
