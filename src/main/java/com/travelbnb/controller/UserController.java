@@ -1,6 +1,7 @@
 package com.travelbnb.controller;
 
 import com.travelbnb.entity.AppUser;
+import com.travelbnb.payload.JWTTokenDto;
 import com.travelbnb.payload.LoginDto;
 import com.travelbnb.repository.AppUserRepository;
 import com.travelbnb.service.UserService;
@@ -36,10 +37,13 @@ public class UserController {
 
     //method for signup feature
     @PostMapping("/login")
-    public ResponseEntity<String> verifyLogin(@RequestBody LoginDto loginDto){
+    public ResponseEntity<?> verifyLogin(@RequestBody LoginDto loginDto){
         String token = userService.verifyLogin(loginDto);
         if(token != null){
-            return new ResponseEntity<>(token,HttpStatus.OK);
+            JWTTokenDto jwtToken = new JWTTokenDto();
+            jwtToken.setType("JWT Token");
+            jwtToken.setToken(token);
+            return new ResponseEntity<>(jwtToken,HttpStatus.OK);
         }else{
         return new ResponseEntity<>("Invalid token! ",HttpStatus.OK);
         }

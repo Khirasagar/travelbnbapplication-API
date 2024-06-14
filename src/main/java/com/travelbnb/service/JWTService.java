@@ -2,6 +2,7 @@ package com.travelbnb.service;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.interfaces.DecodedJWT;
 import com.travelbnb.entity.AppUser;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,6 +24,7 @@ public class JWTService {
 
 
     private Algorithm algorithm;
+    private final String USER_NAME="username"; //username is a fixed entity thus "FINAL"
 
     @PostConstruct
     public void postConstruct(){
@@ -31,9 +33,15 @@ public class JWTService {
 
     public String generateToken(AppUser user){ //Computer Engineer is Unemployed
         return JWT.create()
-                .withClaim("username", user.getUsername())
+                .withClaim(USER_NAME, user.getUsername())
                 .withExpiresAt(new Date(System.currentTimeMillis()+expiryTime))
                 .withIssuer(issuer)
                 .sign(algorithm);
+    }
+
+    //token verification procedure
+    public String getUserName(String token){
+        DecodedJWT decodedJWT = JWT.require(algorithm).withIssuer(issuer).build().verify(token);
+        return decodedJWT.getClaim(USER_NAME).asString();
     }
 }
