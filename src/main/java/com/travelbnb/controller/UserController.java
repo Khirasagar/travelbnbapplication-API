@@ -47,6 +47,5 @@ public class UserController {
         }else{
         return new ResponseEntity<>("Invalid token! ",HttpStatus.OK);
         }
-
     }
 }
