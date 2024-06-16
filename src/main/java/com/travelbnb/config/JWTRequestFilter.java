@@ -23,12 +23,13 @@ public class JWTRequestFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
        String tokenHeader =  request.getHeader("Authorization");
-        System.out.println(tokenHeader);
-        String token = tokenHeader.substring(8,tokenHeader.length()-1);
-        String username = jwtService.getUserName(token);
-        System.out.println(token);
-        System.out.println(username);
-        filterChain.doFilter(request,response); //call this line when the url is subsequently requested after
-
+       if(tokenHeader!=null && tokenHeader.startsWith("Bearer ")) {
+           System.out.println(tokenHeader);
+           String token = tokenHeader.substring(8,tokenHeader.length()-1);
+           String username = jwtService.getUserName(token);
+           System.out.println(token);
+           System.out.println(username);
+       }
+       filterChain.doFilter(request,response); //call this line when the url is subsequently requested after the previous request
     }
 }
