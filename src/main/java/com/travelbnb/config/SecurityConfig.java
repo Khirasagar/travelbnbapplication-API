@@ -17,8 +17,9 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http)throws Exception{
-        http.addFilterBefore(jwtRequestFilter, AuthorizationFilter.class);
+
         http.csrf().disable().cors().disable(); //H cd^2  (h cd square)
+        http.addFilterBefore(jwtRequestFilter, AuthorizationFilter.class);
         http.authorizeHttpRequests().anyRequest().permitAll();       //(haap)
         return http.build();
     }

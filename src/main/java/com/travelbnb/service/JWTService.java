@@ -39,9 +39,11 @@ public class JWTService {
                 .sign(algorithm);
     }
 
-    //token verification procedure
     public String getUserName(String token){
-        DecodedJWT decodedJWT = JWT.require(algorithm).withIssuer(issuer).build().verify(token);
+        DecodedJWT decodedJWT = JWT.require(algorithm)
+                                    .withIssuer(issuer)
+                                        .build()
+                                            .verify(token);
         return decodedJWT.getClaim(USER_NAME).asString();
     }
 }
