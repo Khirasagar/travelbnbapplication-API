@@ -10,6 +10,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -45,9 +47,12 @@ public class JWTRequestFilter extends OncePerRequestFilter {
 
                //to keep track of current users logged in (Session management)
                UsernamePasswordAuthenticationToken authenticationToken =
-                       new UsernamePasswordAuthenticationToken(appUser,null,Collections.singleton(new SimpleGrantedAuthority(appUser.getRole())));
+                       new UsernamePasswordAuthenticationToken(appUser,null, Collections.singleton(new SimpleGrantedAuthority(appUser.getRole())));
+               authenticationToken.setDetails(new WebAuthenticationDetails(request)); //as we request
+               SecurityContextHolder.getContext().setAuthentication(authenticationToken); //scandal got settled automatically
            }
        }
-       filterChain.doFilter(request,response); //call this line when the url is subsequently requested after the previous request
+       //call this line when the url is subsequently requested after the previous request
+       filterChain.doFilter(request,response);
     }
 }
