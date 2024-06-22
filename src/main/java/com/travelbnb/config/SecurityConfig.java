@@ -24,10 +24,11 @@ public class SecurityConfig {
 
 
         //which url can be accessed by whom ..Authorization of url
-        //harpic
+
         http.authorizeHttpRequests()
-                .requestMatchers("/api/v1/users/login" , "/api/v1/users/createUser").permitAll()
+                .requestMatchers("/api/v1/users/login" , "/api/v1/users/createUser").permitAll() //harpic
                 .requestMatchers("/api/v1/countries/addCountry").hasRole("ADMIN")
+                .requestMatchers("/api/v1/photos/upload").hasAnyRole("ADMIN","USER")
                 .anyRequest().authenticated();
 
         return http.build();
