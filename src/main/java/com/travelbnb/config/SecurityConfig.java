@@ -20,7 +20,16 @@ public class SecurityConfig {
 
         http.csrf().disable().cors().disable(); //H cd^2  (h cd square)
         http.addFilterBefore(jwtRequestFilter, AuthorizationFilter.class);
-        http.authorizeHttpRequests().anyRequest().permitAll();       //(haap)
+        //http.authorizeHttpRequests().anyRequest().permitAll();       //(haap)
+
+
+        //which url can be accessed by whom ..Authorization of url
+        //harpic
+        http.authorizeHttpRequests()
+                .requestMatchers("/api/v1/users/login" , "/api/v1/users/createUser").permitAll()
+                .requestMatchers("/api/v1/countries/addCountry").hasRole("ADMIN")
+                .anyRequest().authenticated();
+
         return http.build();
     }
 }

@@ -23,7 +23,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping
+    @PostMapping("/createUser")
     public ResponseEntity<?> createUser(@RequestBody AppUser user){
             if(appUserRepository.existsByEmail(user.getEmail())){
                 return new ResponseEntity<>("Email already exists!!!", HttpStatus.BAD_REQUEST);
